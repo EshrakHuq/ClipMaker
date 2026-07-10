@@ -1,0 +1,15 @@
+moviepy
+numpy
+decorator
+imageio
+imageio-ffmpeg
+proglog
+tqdm
+nltk
+Pillow
+openai-whisper
+google-genai
+edge-tts
+google-api-python-client
+google-auth-oauthlib
+google-auth-httplib2
