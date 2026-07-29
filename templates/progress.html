@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Processing Video Assets...</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@1/css/pico.min.css">
+    <style>
+        main { max-width: 600px; margin: 80px auto; text-align: center; }
+        .card { padding: 40px; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
+        .status-msg { margin-top: 15px; font-weight: 500; font-size: 1.15rem; color: #555; }
+        .percentage-val { font-size: 2.5rem; font-weight: bold; margin-bottom: 20px; }
+        .action-button { display: none; margin-top: 30px; }
+        .error-card { display: none; background-color: #fff3cd; color: #856404; border: 1px solid #ffeeba; padding: 20px; border-radius: 6px; margin-top: 25px; text-align: left; }
+    </style>
+</head>
+<body>
+    <main class="container">
+        <article class="card">
+            <h2>Generating Media</h2>
+            <p>Please keep this page open while tasks complete.</p>
+
+            <div class="percentage-val" id="percent-display">0%</div>
+
+            <!-- Progress Bar -->
+            <progress id="progress-bar" value="0" max="100"></progress>
+
+            <!-- Dynamic Console Progress Message -->
+            <div class="status-msg" id="status-message">Initializing resources...</div>
+
+            <!-- Warning Card Container (Reveals if upload fails) -->
+            <div class="error-card" id="warning-card">
+                <strong style="font-size: 1.1rem; display: block; margin-bottom: 5px;">⚠️ Upload Limit Reached</strong>
+                <span id="warning-text"></span>
+            </div>
+
+            <a href="/" id="home-btn" class="button action-button">Go Back to Home</a>
+        </article>
+    </main>
+
+    <script>
+        const jobId = "{{ job_id }}";
+        const progressBar = document.getElementById("progress-bar");
+        const statusMessage = document.getElementById("status-message");
+        const percentDisplay = document.getElementById("percent-display");
+        const homeBtn = document.getElementById("home-btn");
+        const warningCard = document.getElementById("warning-card");
+        const warningText = document.getElementById("warning-text");
+
+        async function checkProgress() {
+            try {
+                const response = await fetch(`/api/status/${jobId}`);
+                if (!response.ok) throw new Error("Network issues encountered");
+                
+                const data = await response.json();
+                
+                // Update interface components
+                progressBar.value = data.progress;
+                percentDisplay.innerText = data.progress + "%";
+                statusMessage.innerText = data.message;
+
+                if (data.status === "completed") {
+                    statusMessage.style.color = "green";
+                    homeBtn.style.display = "inline-block";
+                    clearInterval(pollInterval);
+                } else if (data.status === "stopped_early") {
+                    statusMessage.style.color = "orange";
+                    percentDisplay.style.color = "orange";
+                    homeBtn.style.display = "inline-block";
+                    clearInterval(pollInterval);
+                    
+                    // Reveal the warning card and trigger the modal alert popup
+                    if (data.alert) {
+                        warningText.innerText = data.alert;
+                        warningCard.style.display = "block";
+                        alert(data.alert);
+                    }
+                } else if (data.status === "not_found") {
+                    statusMessage.style.color = "red";
+                    clearInterval(pollInterval);
+                }
+            } catch (error) {
+                console.error("Failed to query API: ", error);
+            }
+        }
+
+        // Query status endpoint every 1000ms
+        const pollInterval = setInterval(checkProgress, 1000);
+        checkProgress();
+    </script>
+</body>
+</html>

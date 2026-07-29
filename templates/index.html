@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Video Generator Pipeline</title>
+    <!-- Pico.css for styling -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@1/css/pico.min.css">
+    <style>
+        .hidden { display: none; }
+        main { max-width: 800px; margin: 0 auto; padding: 20px; }
+    </style>
+</head>
+<body>
+    <main class="container">
+        <header>
+            <h1>AI Video Generator</h1>
+            <p>Generate, render, and schedule short-form videos automatically.</p>
+        </header>
+
+        <section>
+            <form action="/generate" method="POST">
+                
+                <!-- Number of Videos -->
+                <label for="numvids">Number of Videos to Generate (Max 10):</label>
+                <input type="number" id="numvids" name="numvids" min="1" max="10" value="1" required>
+
+                <!-- Generation Mode Dropdown -->
+                <label for="mode_selection">Story Customization Mode:</label>
+                <select id="mode_selection" name="mode_selection" onchange="toggleInputs()" required>
+                    <option value="1">Randomize (Horror, Drama, or Comedy)</option>
+                    <option value="2">Specific Preset Genre</option>
+                    <option value="3">Custom Niche / Prompt</option>
+                </select>
+
+                <!-- Conditional Input: Preset Genre -->
+                <div id="preset_container" class="hidden">
+                    <label for="genre_choice">Select Predefined Genre:</label>
+                    <select id="genre_choice" name="genre_choice">
+                        <option value="1">Scary / Horror (With background music)</option>
+                        <option value="2">Comedy / Reddit Drama (No music)</option>
+                    </select>
+                </div>
+
+                <!-- Conditional Input: Custom Prompt -->
+                <div id="custom_container" class="hidden">
+                    <label for="custom_prompt">Type your custom niche/story prompt:</label>
+                    <textarea id="custom_prompt" name="custom_prompt" rows="3" placeholder="e.g., 'A software developer who discovers hidden code in an ancient mainframe...'"></textarea>
+                </div>
+
+                <button type="submit" style="margin-top: 20px;">Start Generation Pipeline</button>
+            </form>
+        </section>
+    </main>
+
+    <script>
+        function toggleInputs() {
+            const mode = document.getElementById("mode_selection").value;
+            const presetContainer = document.getElementById("preset_container");
+            const customContainer = document.getElementById("custom_container");
+
+            presetContainer.classList.add("hidden");
+            customContainer.classList.add("hidden");
+
+            document.getElementById("genre_choice").required = false;
+            document.getElementById("custom_prompt").required = false;
+
+            if (mode === "2") {
+                presetContainer.classList.remove("hidden");
+                document.getElementById("genre_choice").required = true;
+            } else if (mode === "3") {
+                customContainer.classList.remove("hidden");
+                document.getElementById("custom_prompt").required = true;
+            }
+        }
+    </script>
+</body>
+</html>

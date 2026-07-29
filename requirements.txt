@@ -1,4 +1,11 @@
+# Web Framework
+flask
+
+# Audio-Visual & Subtitles
 moviepy
+openai-whisper
+edge-tts
+Pillow
 numpy
 decorator
 imageio
@@ -6,10 +13,9 @@ imageio-ffmpeg
 proglog
 tqdm
 nltk
-Pillow
-openai-whisper
+
+# Gemini AI & Google APIs
 google-genai
-edge-tts
 google-api-python-client
 google-auth-oauthlib
 google-auth-httplib2
