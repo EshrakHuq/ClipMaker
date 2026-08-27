@@ -474,7 +474,7 @@ def upload_to_youtube(video_path, title, description, publish_at=None):
 # ==============================================================================
 
 def main():
-    if GEMINI_API_KEY == "your-api-key-here" or not GEMINI_API_KEY:
+    if GEMINI_API_KEY != GEMINI_API_KEY:
         print("Please configure your GEMINI_API_KEY at the top of the file or set it as an environment variable.")
         return
 
