@@ -54,8 +54,8 @@ An end-to-end automated pipeline that generates, renders, and schedules YouTube 
 
 ### 1. Clone the Repository
 ```bash
-git clone https://github.com/your-username/ai-shorts-generator.git
-cd ai-shorts-generator
+git clone https://github.com/EshrakHuq/ClipMaker/
+cd ClipMaker
 ```
 
 ### 2. Set Up a Virtual Environment
