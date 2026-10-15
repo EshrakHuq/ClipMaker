@@ -28,7 +28,7 @@ An end-to-end automated pipeline that generates, renders, and schedules YouTube 
 │   ├── index.html          # Web UI setup & configuration form
 │   └── progress.html       # Web UI real-time render progress page
 ├── app.py                  # Flask Web Application entrypoint
-├── console_app.py          # Interactive Terminal/CLI script
+├── main.py                 # Interactive Terminal/CLI script
 ├── background_music.mp3    # (Optional) Ambient background music for horror/scary stories
 ├── client_secret.json      # Google Cloud OAuth credentials file (YouTube Uploads)
 ├── impact.ttf              # Font file for rendering dynamic subtitles
@@ -79,7 +79,7 @@ pip install -r requirements.txt
 ##  Configuration
 
 ### 1. Add Your Gemini API Key
-Open `app.py` and `console_app.py`, locate this line near the top, and paste your API key directly:
+Open `app.py` and `main.py`, locate this line near the top, and paste your API key directly:
 
 ```python
 GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY", "PASTE_YOUR_GEMINI_KEY_HERE")
@@ -124,7 +124,7 @@ http://127.0.0.1:5000
 ### Option 2: Console Interface (CLI)
 Run the script in your terminal:
 ```bash
-python console_app.py
+python main.py
 ```
 Follow the interactive prompts to define how many videos to make and configure specific genres/prompts for each video in the batch.
 
